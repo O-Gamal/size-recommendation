@@ -28,6 +28,12 @@ function valuetext(val) {
     return `${marks[val-1].label}°C`;
 }
 
+const onSubmit = (e) =>{
+  e.preventDefault()
+  console.log('hello world')
+
+}
+
 
 function Input() {
   return (
@@ -71,7 +77,12 @@ function Input() {
         />  
 
         
-        <button className="my-20 text-white font-semibold block w-full py-2 bg-blue-500 rounded-md text-m shadow-lg focus:outline-none hover:bg-gray-100 hover:ring-2 hover:ring-blue-500 hover:text-blue-500" type="submit" form="measurements">Show Fit</button> 
+        <button
+          className="my-20 text-white font-semibold block w-full py-2 bg-blue-500 rounded-md text-m shadow-lg focus:outline-none hover:bg-gray-100 hover:ring-2 hover:ring-blue-500 hover:text-blue-500"
+          type="submit"
+          form="measurements"
+          onClick={onSubmit}
+        >Show Fit</button> 
     </div>
   );
 }
