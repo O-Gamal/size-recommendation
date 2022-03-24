@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import Slider from '@mui/material/Slider';
-
+import KNN from 'ml-knn'  ;
+import  data from'../sizechart.js';
 const marks = [
     {
       value: 1,
@@ -28,9 +29,27 @@ function valuetext(val) {
     return `${marks[val-1].label}°C`;
 }
 
-const onSubmit = (e) =>{
-  e.preventDefault()
-  console.log('hello world')
+const HandleSubmit = (e) =>{
+  e.preventDefault();
+  const measurements = Object.keys(data['H&M']['male']['Tops'])
+  const topsMeasurments = []
+  measurements.forEach(size => {
+    topsMeasurments.push(Object.values(data['H&M']['male']['Tops'][size]))
+  
+  });
+let train_dataset = topsMeasurments;
+
+  console.log();
+  let train_labels = [0, 1, 2, 3, 4, 5];
+  let knn = new KNN(train_dataset, train_labels, { k: 1}); 
+  let test_dataset = 
+    [ e.target[0].value,e.target[1].value,e.target[2].value, e.target[5].value, e.target[6].value ].map(e=>e*1)
+  ;
+ 
+  
+  let ans = knn.predict(test_dataset);
+  
+  console.log(ans);
 
 }
 
@@ -39,7 +58,7 @@ function Input() {
   return (
     <div className="flex-auto w-60 flex flex-col p-12">
         <h1 className='text-center text-blue-500 uppercase align-top font-bold text-2xl m-5'>Size Recommendation</h1>
-        <form id ='measurements' className='my-12grid grid-cols-2 gap-5'>            
+        <form onSubmit={HandleSubmit} id ='measurements' className='my-12grid grid-cols-2 gap-5'>            
             <input className='input-filed' type="text" id="height" placeholder="Height" required />
             <input className='input-filed' type="text" id="chest" placeholder="Chest" required />
             <input className='input-filed' type="text" id="waits" placeholder="Waist" required />
@@ -64,8 +83,7 @@ function Input() {
                 <option value="Tight">Tight</option>
                 <option value="Loose">Loose</option>
             </select> */}
-        </form>
-        <Slider
+            <Slider
             aria-label="Fit Preferences"
             defaultValue={3}
             getAriaValueText={valuetext}
@@ -75,14 +93,16 @@ function Input() {
             min={1}
             max={5}
         />  
-
-        
-        <button
+            <button
           className="my-20 text-white font-semibold block w-full py-2 bg-blue-500 rounded-md text-m shadow-lg focus:outline-none hover:bg-gray-100 hover:ring-2 hover:ring-blue-500 hover:text-blue-500"
           type="submit"
           form="measurements"
-          onClick={onSubmit}
         >Show Fit</button> 
+        </form>
+ 
+
+        
+    
     </div>
   );
 }
