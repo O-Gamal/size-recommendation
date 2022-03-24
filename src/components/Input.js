@@ -30,6 +30,12 @@ function valuetext(val) {
 }
 
 const HandleSubmit = (e) =>{
+   /**
+    * TODO
+    * Feature Normalization
+    * Female recommendation
+    * recommend based on tops or bottoms
+    */
   e.preventDefault();
   const measurements = Object.keys(data['H&M']['male']['Tops'])
   const topsMeasurments = []
