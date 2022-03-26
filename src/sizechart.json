@@ -56,15 +56,15 @@
     },
     "female": {
       "tops": {
-        "xxs": { "bust": 76, "waist": 60, "neckline": 34.75, "armLength": 59.4 },
-        "xs": { "bust": 80, "waist": 64, "neckline": 35.5, "armLength": 59.8 },
-        "s": { "bust": 88, "waist": 72, "neckline": 37, "armLength": 60 },
-        "m": { "bust": 96, "waist": 80, "neckline": 39, "armLength": 60.4 },
-        "l": { "bust": 104, "waist": 90, "neckline": 41, "armLength": 60.8 },
-        "xl": { "bust": 116, "waist": 102, "neckline": 43, "armLength": 61.2 },
-        "2xl": { "bust": 128, "waist": 114, "neckline": 45, "armLength": 61.6 },
-        "3xl": { "bust": 140, "waist": 128, "neckline": 47, "armLength": 62 },
-        "4xl": { "bust": 152, "waist": 142, "neckline": 49, "armLength": 62.4 }
+        "xxs": { "chest": 76, "waist": 60, "neckline": 34.75, "armLength": 59.4 },
+        "xs": { "chest": 80, "waist": 64, "neckline": 35.5, "armLength": 59.8 },
+        "s": { "chest": 88, "waist": 72, "neckline": 37, "armLength": 60 },
+        "m": { "chest": 96, "waist": 80, "neckline": 39, "armLength": 60.4 },
+        "l": { "chest": 104, "waist": 90, "neckline": 41, "armLength": 60.8 },
+        "xl": { "chest": 116, "waist": 102, "neckline": 43, "armLength": 61.2 },
+        "2xl": { "chest": 128, "waist": 114, "neckline": 45, "armLength": 61.6 },
+        "3xl": { "chest": 140, "waist": 128, "neckline": 47, "armLength": 62 },
+        "4xl": { "chest": 152, "waist": 142, "neckline": 49, "armLength": 62.4 }
       },
       "bottoms": {
         "xxs": { "waist": 60, "hips": 84, "inseam": 78 },

@@ -61,13 +61,13 @@ function Input(props) {
     const tops = sizechart["H&M"][gender.toLowerCase()]['tops']
     const bottoms = sizechart["H&M"][gender.toLowerCase()]['bottoms']
     let styleControl
-    if(style == 1) styleControl = -3
-    else if(style == 2) styleControl = -1
-    else if(style == 4) styleControl = 1
-    else if(style == 5) styleControl = 3
+    if(style === 1) styleControl = -3
+    else if(style === 2) styleControl = -1
+    else if(style === 4) styleControl = 1
+    else if(style === 5) styleControl = 3
     else styleControl = 0
 
-    if(garment == "Pants" || garment == "Skirt" ){
+    if(garment === "Pants" || garment === "Skirt" ){
       for (let s in sizes){
           
         if(bottoms[sizes[s]]['waist'] >= parseInt(waist)+styleControl && bottoms[sizes[s]]['hips'] >= parseInt(hips)+styleControl && bottoms[sizes[s]]['inseam'] >= parseInt(inseam)){
@@ -79,13 +79,21 @@ function Input(props) {
       }
     }else{
         for (let s in sizes){
-            
-          if(tops[sizes[s]]['height'] >= parseInt(height) && tops[sizes[s]]['neckline'] >= parseInt(neckline) && tops[sizes[s]]['chest'] >= parseInt(chest)+styleControl && tops[sizes[s]]['waist'] >= parseInt(waist)+styleControl && tops[sizes[s]]['armLength'] >= parseInt(armLength)){
-            setSize(sizes[s])
-            props.parentCallback(sizes[s])
-            console.log(sizes[s])
-            break
-          }
+          if(gender === 'Female'){
+            if(tops[sizes[s]]['neckline'] >= parseInt(neckline) && tops[sizes[s]]['chest'] >= parseInt(chest)+styleControl && tops[sizes[s]]['waist'] >= parseInt(waist)+styleControl && tops[sizes[s]]['armLength'] >= parseInt(armLength)){
+              setSize(sizes[s])
+              props.parentCallback(sizes[s])
+              console.log(sizes[s])
+              break
+            }
+          }else{
+            if(tops[sizes[s]]['height'] >= parseInt(height) && tops[sizes[s]]['neckline'] >= parseInt(neckline) && tops[sizes[s]]['chest'] >= parseInt(chest)+styleControl && tops[sizes[s]]['waist'] >= parseInt(waist)+styleControl && tops[sizes[s]]['armLength'] >= parseInt(armLength)){
+              setSize(sizes[s])
+              props.parentCallback(sizes[s])
+              console.log(sizes[s])
+              break
+            }
+          }               
         }
     }
 
@@ -112,7 +120,7 @@ function Input(props) {
           className="input-filed"
           type="number"
           id="chest"
-          placeholder="Chest"
+          placeholder={gender === "Male"? "Chest" : "Bust"}
           value={chest}
           onChange={(e)=> setChest(e.target.value)}
           required
@@ -166,7 +174,7 @@ function Input(props) {
           <option value="Female">Female</option>
         </select>
         <select className="input-filed" id="garment" value={garment} onChange={(e)=> setGarment (e.target.value)}>
-          {gender == "Male"? garmentsMale.map((gar) => <option key={gar} value={gar}>{gar}</option>) : garmentsFemale.map((gar) => <option key={gar} value={gar}>{gar}</option>)}
+          {gender === "Male"? garmentsMale.map((gar) => <option key={gar} value={gar}>{gar}</option>) : garmentsFemale.map((gar) => <option key={gar} value={gar}>{gar}</option>)}
         </select>
       </form>
       <Slider
