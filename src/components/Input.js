@@ -78,7 +78,7 @@ function Input(props) {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    // const sizes = Object.keys(sizechart["H&M"][gender.toLowerCase()]['tops'])
+    const sizes = Object.keys(sizechart["H&M"][gender.toLowerCase()]['tops'])
     // const tops = sizechart["H&M"][gender.toLowerCase()]['tops']
     // const bottoms = sizechart["H&M"][gender.toLowerCase()]['bottoms']
     let styleControl
@@ -115,7 +115,16 @@ function Input(props) {
     let knn = new KNN(trainDataset, train_labels, { k: 1}); 
     let ans = knn.predict(test_dataset);
     console.log("predicted ans" ,ans);
+    props.parentCallback(sizes[ans])
+    console.log(sizes[ans]);
 
+    /**
+     * TODO:
+     * 1) DO Size preferences [tight-loose-average]
+     * 2) DO Optional features like neckline and armlength
+     * 3)  DO Feature Normalization
+     * 4) DO CODE OPTIMIZATION AND CLEANING
+     */
     
     
   };
