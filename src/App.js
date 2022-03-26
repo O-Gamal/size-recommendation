@@ -9,7 +9,7 @@ function App() {
     setSizeLabel(data)
   }
   return (
-    <div className="flex fixed p-0 m-0 w-full h-full bg-gray-100">
+    <div className="grid grid-cols-2 p-0 m-0 w-full h-full bg-gray-100 fixed">
       <Input parentCallback = {handleCallback}/>
       <Output size={sizeLabel} />
     </div>
