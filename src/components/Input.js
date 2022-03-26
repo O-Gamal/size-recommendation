@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Slider from "@mui/material/Slider";
 import sizechart from '../sizechart.json';
+import KNN from 'ml-knn'  ;
+
 
 const marks = [
   {
@@ -50,44 +52,69 @@ function Input(props) {
   const [neckline, setNeckline] = useState("");
   const [armLength, setArmLenght] = useState("");
   const [size, setSize] = useState("");
+  const userTopMeasurments = [height,chest,waist,neckline,armLength].map(e=>parseInt(e));
+  const userBottomMeasurments = [waist,hips,inseam].map(e=>parseInt(e));
 
-  
+  const generateTrainDataSet = (type) => {
+      if(type ==='tops'){
+        const sizes = Object.keys(sizechart["H&M"][gender.toLowerCase()]['tops'])
+        const topsSizes = []
+        sizes.forEach(size => {
+          topsSizes.push(Object.values(sizechart['H&M'][gender.toLowerCase()]['tops'][size]))
+        });
+      return topsSizes;
+      }
+      else if (type ==='bottoms'){
+        const sizes = Object.keys(sizechart["H&M"][gender.toLowerCase()]['bottoms'])
+        const bottomSizes = []
+        sizes.forEach(size => {
+          bottomSizes.push(Object.values(sizechart['H&M'][gender.toLowerCase()]['bottoms'][size]))
+        });
+      return bottomSizes;
+      }
+  }
 
 
 
   const onSubmit = (e) => {
     e.preventDefault()
-    const sizes = Object.keys(sizechart["H&M"][gender.toLowerCase()]['tops'])
-    const tops = sizechart["H&M"][gender.toLowerCase()]['tops']
-    const bottoms = sizechart["H&M"][gender.toLowerCase()]['bottoms']
+    // const sizes = Object.keys(sizechart["H&M"][gender.toLowerCase()]['tops'])
+    // const tops = sizechart["H&M"][gender.toLowerCase()]['tops']
+    // const bottoms = sizechart["H&M"][gender.toLowerCase()]['bottoms']
     let styleControl
-    if(style == 1) styleControl = -3
-    else if(style == 2) styleControl = -1
-    else if(style == 4) styleControl = 1
-    else if(style == 5) styleControl = 3
+    if(style === 1) styleControl = -3
+    else if(style === 2) styleControl = -1
+    else if(style === 4) styleControl = 1
+    else if(style === 5) styleControl = 3
     else styleControl = 0
 
-    if(garment == "Pants" || garment == "Skirt" ){
-      for (let s in sizes){
-          
-        if(bottoms[sizes[s]]['waist'] >= parseInt(waist)+styleControl && bottoms[sizes[s]]['hips'] >= parseInt(hips)+styleControl && bottoms[sizes[s]]['inseam'] >= parseInt(inseam)){
-          setSize(sizes[s])
-          props.parentCallback(sizes[s])
-          console.log(sizes[s])
-          break
-        }
-      }
-    }else{
-        for (let s in sizes){
-            
-          if(tops[sizes[s]]['height'] >= parseInt(height) && tops[sizes[s]]['neckline'] >= parseInt(neckline) && tops[sizes[s]]['chest'] >= parseInt(chest)+styleControl && tops[sizes[s]]['waist'] >= parseInt(waist)+styleControl && tops[sizes[s]]['armLength'] >= parseInt(armLength)){
-            setSize(sizes[s])
-            props.parentCallback(sizes[s])
-            console.log(sizes[s])
-            break
-          }
-        }
+    let trainDataset = []
+    let train_labels = [0, 1, 2, 3, 4, 5,6,7,8];
+    let test_dataset = [];
+    console.log(gender);
+    if(gender.toLowerCase() === 'male'){
+      train_labels.splice(6,3);
     }
+
+    if(garment === "Pants" || garment === "Skirt" ){
+      // update train data set and test data set
+      trainDataset = generateTrainDataSet('bottoms') 
+      test_dataset = userBottomMeasurments
+    }else{
+      // update train data set and test data set
+      trainDataset = generateTrainDataSet('tops')
+      test_dataset = userTopMeasurments
+
+    }
+    // predict knn
+    console.log(test_dataset);
+    console.log(trainDataset);
+    console.log(train_labels);
+
+
+    let knn = new KNN(trainDataset, train_labels, { k: 1}); 
+    let ans = knn.predict(test_dataset);
+    console.log("predicted ans" ,ans);
 
     
     
@@ -166,7 +193,7 @@ function Input(props) {
           <option value="Female">Female</option>
         </select>
         <select className="input-filed" id="garment" value={garment} onChange={(e)=> setGarment (e.target.value)}>
-          {gender == "Male"? garmentsMale.map((gar) => <option key={gar} value={gar}>{gar}</option>) : garmentsFemale.map((gar) => <option key={gar} value={gar}>{gar}</option>)}
+          {gender === "Male"? garmentsMale.map((gar) => <option key={gar} value={gar}>{gar}</option>) : garmentsFemale.map((gar) => <option key={gar} value={gar}>{gar}</option>)}
         </select>
       </form>
       <Slider
