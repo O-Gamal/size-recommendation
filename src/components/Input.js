@@ -91,22 +91,43 @@ function Input(props) {
     let trainDataset = []
     let train_labels = [0, 1, 2, 3, 4, 5,6,7,8];
     let test_dataset = [];
-    console.log(gender);
     if(gender.toLowerCase() === 'male'){
       train_labels.splice(6,3);
     }
-
     if(garment === "Pants" || garment === "Skirt" ){
       // update train data set and test data set
       trainDataset = generateTrainDataSet('bottoms') 
-      test_dataset = userBottomMeasurments
-    }else{
+      test_dataset = userBottomMeasurments.map(e=>e+styleControl)
+      console.log(styleControl,"styleControl");
+
+    } else {
       // update train data set and test data set
+      console.log(armLength,'aarm');
       trainDataset = generateTrainDataSet('tops')
-      test_dataset = userTopMeasurments
+      test_dataset = userTopMeasurments.map((e,index)=>{
+        if(index===1 || index ===2){
+          e = e+ styleControl;
+        }
+        return e;
+      })
+      if (armLength === "") {
+        test_dataset.pop();
+        trainDataset.map(e=>e.pop())
+            }
+      if(neckline === "" && armLength  === ""){
+        trainDataset.map(e=>e.pop())
+        test_dataset.pop();
+      }
+      else if(neckline === "" && armLength)
+      {
+        trainDataset.map(e=>e.splice(4,1))
+        userTopMeasurments.splice(4,1); 
+      }
+
 
     }
     // predict knn
+    
     console.log(test_dataset);
     console.log(trainDataset);
     console.log(train_labels);
@@ -120,8 +141,8 @@ function Input(props) {
 
     /**
      * TODO:
-     * 1) DO Size preferences [tight-loose-average]
-     * 2) DO Optional features like neckline and armlength
+     * 1) DO Size preferences [tight-loose-average]  [done]
+     * 2) DO Optional features like neckline and armlength  [done]
      * 3)  DO Feature Normalization
      * 4) DO CODE OPTIMIZATION AND CLEANING
      */
